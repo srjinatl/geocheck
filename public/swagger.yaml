@@ -1,0 +1,114 @@
+swagger: '2.0'
+
+info:
+  version: "0.0.1"
+  title: GeoCheck Microservice API
+
+consumes:
+  - text/plain
+
+produces:
+  - application/json
+
+paths:
+  /health:
+    get:
+      operationId: get
+      description: Get health status of gomicroservice
+      responses:
+        200:
+          description: "Health check response"
+          schema:
+            $ref: "#/definitions/healthResponse"
+          examples:
+            application/json: { "status": "UP"}
+  /geocheck:
+    get:
+      description: Checks for membership of country for IP address in supplied country whitelist
+      produces:
+        - application/json
+      parameters:
+        - name: countries
+          in: query
+          required: true
+          type: string
+          x-example: 'SE,GB,US'
+        - name: ipaddr
+          in: query
+          required: true
+          type: string
+          x-example: 67.166.247.45
+      responses:
+        '200':
+          description: Request processed successfully - see result status and country for valid indication
+          schema:
+            $ref: '#/definitions/Model0'
+          examples:
+            Country for IP found in whitelist: {
+              "input": {
+                "ip_address": "67.166.247.56",
+                "white_list": "SE,GB,US"
+              },
+              "result": {
+                "status": "Valid",
+                "country": "US"
+              }
+            }
+            Country for IP not found in whitelist: {
+              "input": {
+                "ip_address": "67.166.247.56",
+                "white_list": "SE,GB"
+              },
+              "result": {
+                "status": "Invalid",
+                "country": "US"
+              }
+            }
+        '400':
+          description: Invalid request - one or both required url parameters are missing or supplied with no value
+          schema:
+            $ref: '#/definitions/Model1'
+            Missing ipaddr url parameter: {
+              "input": {
+                "ip_address": "",
+                "white_list": ""
+              },
+              "result": {
+                "status": "Error",
+                "country": ""
+              },
+              "error_msg" : "ipaddr url parameter required"
+            }
+
+definitions:
+  healthResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+  Input:
+    properties:
+      ip_address:
+        type: string
+      white_list:
+        type: string
+  Result:
+    properties:
+      status:
+        type: string
+      country:
+        type: string
+  Model0:
+    properties:
+      input:
+        $ref: '#/definitions/Input'
+      result:
+        $ref: '#/definitions/Result'
+  Model1:
+    properties:
+      input:
+        $ref: '#/definitions/Input'
+      result:
+        $ref: '#/definitions/Result'
+      error_msg:
+        type: string
