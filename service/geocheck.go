@@ -45,7 +45,7 @@ func (s *GeoCheckService) initEndpoints() {
     // Swagger endpoints
     s.config.router.GET("/explorer", routers.SwaggerExplorerRedirect)
     s.config.router.GET("/swagger/api", routers.SwaggerAPI)
-    s.config.router.Use(static.Serve("/explorer/", static.LocalFile("./public/swagger-ui/", true)))
+    s.config.router.Use(static.Serve("/explorer/", static.LocalFile("./public/", true)))
 
     // Static webpage content endpoints
     s.config.router.LoadHTMLGlob("public/*.html")
