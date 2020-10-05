@@ -1,8 +1,5 @@
 # Geocheck service
 
-The remaining todos for this exercise:
-- add tests for geocheck router
-
 This microservice exposes a RESTful API matching a [Swagger](http://swagger.io) definition.
 
 ## Building locally
@@ -35,12 +32,12 @@ In addition to the `/geocheck' endpoint, this service comes with the following c
 The current implementation requires a repackaging / re-deployment of the application in order to update the MaxMind 
 database. Because you cannot simply replace the file within a running application, functionality must be developed to allow
 a new database file to be downloaded so that the application can switch to that newer version. These files are typically
-updated on a weekly cadency - so a once-a-day update check would be more than adequate to ensure the file is kept up to date.
+updated on a weekly cadence - so a once-a-day update check would be more than adequate to ensure the file is kept up to date.
 
 The simplest approach would have each running container be responsible for periodically pulling down an updated copy and 
 then have the application dynamically switch to the new version. Once switched - the old version could be deleted. The
-disadvantage of this approach, beyond the obvious overhead of each container downloading its own copy,  
-is that you would need to synchronize the update across the containers  
+disadvantage of this approach, beyond the obvious overhead of each container downloading its own copy,
+is that you would need to synchronize the update across the containers
 to avoid inconsistent results from being returned. It also opens up more potential for failures since each container
 is performing this update process.
 
