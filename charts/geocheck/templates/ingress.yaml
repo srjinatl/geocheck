@@ -1,0 +1,23 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "helmchart.fullname" . -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    app.kubernetes.io/name: {{ include "helmchart.name" . }}
+    helm.sh/chart: {{ include "helmchart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.service.livenessProbe.path }}
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: {{ .Values.service.path }}
+        backend:
+          serviceName: {{ .Chart.Name }}
+          servicePort: {{ .Values.container.port }}
+{{- end }}

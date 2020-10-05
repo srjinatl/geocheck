@@ -1,0 +1,62 @@
+# Default values for helmchart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+service:
+  type: NodePort
+  path: /*
+  livenessProbe:
+    path: /health
+    initialDelaySeconds: 120
+    periodSeconds: 30
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    path: /health
+    initialDelaySeconds: 90
+    periodSeconds: 30
+    successThreshold: 2
+    failureThreshold: 3
+
+container:
+  port: 8080
+
+env:
+  environment: dev
+  project: geocheck
+  humanreadable: true
+
+maxmind:
+  dbdir: "/usr/local/geocheck/maxmind/"
+  dbname: "GeoLite2-Country.mmdb"
+
+ingress:
+  enabled: false
+
+image:
+  repository: ""
+  tag: ""
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 2
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+#   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
