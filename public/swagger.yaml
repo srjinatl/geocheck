@@ -68,6 +68,7 @@ paths:
           description: Invalid request - one or both required url parameters are missing or supplied with no value
           schema:
             $ref: '#/definitions/Model1'
+          examples:
             Missing ipaddr url parameter: {
               "input": {
                 "ip_address": "",
