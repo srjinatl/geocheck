@@ -48,6 +48,7 @@ func (h *GeoCheckHandler) GeoCheck(c *gin.Context) {
             createResponse(ipAddr, "", "Error", "", "ipaddr url parameter required"))
         return
     }
+    h.log.Zap.Debug("IP Addr to look up", zap.String("ipaddr", ipAddr))
 
     // make sure countries has been specified - split into slice
     if countries == "" {
